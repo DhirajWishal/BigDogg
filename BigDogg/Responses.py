@@ -1,6 +1,10 @@
 import random
 import operator
-import py_compile
+
+hello_candidates = [
+    "heyy", "hey",
+    "hello"
+]
 
 hello_list = [
     "Whats good ma g!",
@@ -35,31 +39,141 @@ bark_list = [
 ]
 
 
+def add_to_list(list_name, list_to_add, content, begin_index):
+    """
+    Add a new element to a list.
+    :param list_name: The name of the list.
+    :param list_to_add: The list to add the element to.
+    :param content: The input message.
+    :param begin_index: The beginning index of the entry in the list.
+    :return: The return statement.
+    """
+    input_list = content.split()
+
+    if len(input_list) < (begin_index + 1):
+        return f"Hmm... I think you forgot to enter what you want to add. Please follow the format 'dogg add {list_name} list [...]'"
+
+    entry_to_append = ""
+    for word in range(begin_index, len(input_list)):
+        entry_to_append += input_list[word] + " "
+
+    list_to_add.append(entry_to_append)
+
+    return f"New entry appended to the {list_name} list: " + entry_to_append
+
+
+def remove_from_list(list_name, list_to_be_removed_from, content, begin_index):
+    """
+    Remove an entry from a list.
+    :param list_name: The name of the list.
+    :param list_to_be_removed_from: The list to remove the element from.
+    :param content: The message.
+    :param begin_index: The begin index of the entry.
+    :return: The return note.
+    """
+    input_list = content.split()
+
+    if len(input_list) < (begin_index + 1):
+        return f"Hmm... I think you forgot to enter what you want to remove. Please follow the format 'dogg remove from {list_name} list [...]'"
+
+    entry_to_remove = ""
+    for word in range(begin_index, len(input_list)):
+        entry_to_remove += input_list[word] + " "
+
+    try:
+        list_to_be_removed_from.remove(entry_to_remove)
+
+    except ValueError:
+        return f"I think the entry you wish to remove isn't there in the list. Are you sure about that? Maybe use `dogg print {list_name} list` command before issuing this command."
+
+    return f"The element is successfully removed from the {list_name} list."
+
+
+def print_list(list_name, list_to_print):
+    """
+    Print all the contents of a list.
+    :param list_name: The name of the list.
+    :param list_to_print: The list to be printed.
+    :return: The string to be submitted to the user.
+    """
+    string = ""
+    for entry in list_to_print:
+        string += entry + "\n"
+
+    return f"""
+Printing {list_name} list.
+```
+{string}
+```
+"""
+
+
 def send_help():
     """
     Send help!
     :return: A message containing help information.
     """
-    return """
+    return f"""
 ```
 BigDogg v1.0
 
-Structure: dogg [command] [arg1, arg2, ...]
+Commands: dogg [command] [arg1, arg2, ...]
+    help            -   Send help (print this message).
+    hello           -   Say hello to BigDogg.
+    add             -   Add two numbers. This uses two arguments and the two arguments must be either integers or floats.
+    sub             -   Subtract two numbers. This uses two arguments and the two arguments must be either integers or floats.
+    mul             -   Multiply two numbers. This uses two arguments and the two arguments must be either integers or floats.
+    div             -   Divide two numbers. This uses two arguments and the two arguments must be either integers or floats.
+    all commands    -   Print all the supported commands.
+    
+Author specific commands: dogg [command] [entry...]
+    add to hello list                       -   Add a new element to the hello response list.
+    remove from hello list                  -   Remove an element from the hello response list.
+    add to hello candidate list             -   Add a new element to the hello candidate (selection) list. 
+    remove from hello candidate list        -   Remove an element from the hello candidate list.
+    add to bark list                        -   Add a new element to the bark response list.
+    remove from bark list                   -   Remove an element from the bark response list.
+    add to bark candidate list              -   Add a new element to the bark candidate (selection) list.
+    remove from bark candidate list         -   Remove an element from the bark candidate (selection) list.
+```
+     """
 
-Commands:
-    help    -   Send help (print this message).
-    hello   -   Say hello to BigDogg.
-    add     -   Add two numbers. This uses two arguments and the two arguments must be either integers or floats.
-    sub     -   Subtract two numbers. This uses two arguments and the two arguments must be either integers or floats.
-    mul     -   Multiply two numbers. This uses two arguments and the two arguments must be either integers or floats.
-    div     -   Divide two numbers. This uses two arguments and the two arguments must be either integers or floats.
-    
-Criticism dogg [...]:
-    Just say a bad work or words to dogg and he will respond. Currently supported ones are,
-        "fuck you", "get lost", "suck my dick",
-        "your trash", "your mom", "thats what she said",
-        "ok boomer", "suck my dick", "fucking nigger"
-    
+
+def print_all_commands():
+    """
+    Print all the available commands.
+    :return: The commands.
+    """
+    criticism_string = ""
+    for entry in bark_candidates:
+        criticism_string += "\t\t" + entry + "\n"
+
+    hello_string = ""
+    for entry in hello_candidates:
+        hello_string += "\t\t" + entry + "\n"
+
+    return f"""
+```
+All commands:
+    Friendly: dogg [...]
+{hello_string}
+    Criticism: dogg [...]
+{criticism_string}
+    Execute: 
+        Execute a code snippet using big dogg. There are 2 ways to execute code.
+        1. Using a file attachment.
+            For this the syntax is pretty simple. Add an attachment and add 'dogg execute' in the description.
+        
+        2. Using code blocks.
+            This is a little different from the 1st one, you need to say whats the language type. You can typically do it like this:
+                dogg execute
+                `` `python
+                print("Fuck you")
+                `` `
+                
+                
+            And remember, it should be as one file so make sure to press shift before breaking the line.
+            No, BigDogg doesnt take inputs, for now.
 ```
      """
 
@@ -138,12 +252,4 @@ def dogg_bark(content):
         if candidate in content:
             return random.choice(bark_list)
 
-    return "Bruhh you don't even know what the commands are. Make sure you check `dogg help` before talking to be fool."
-
-
-def execute(content):
-    """
-    Execute a command. By default python single line codes are allowed.
-    :param content: The content containing the code.
-    :return: The executed result.
-    """
+    return "Bruhh you don't even know what the commands are. Make sure you check `dogg help` before talking to me fool."
