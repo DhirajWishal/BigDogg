@@ -1,10 +1,17 @@
 import discord
+from discord.ext import commands
 from DecisionTree import *
+import json
+import aiohttp
 
 client = discord.Client()
 begin_command = "dogg"
+command_prefix = '>'
 decision_tree = DecisionTree(begin_command)
 personal_message_mode = False
+GIPHY_TOKEN = os.environ["GIPHY_TOKEN"]
+
+bot = commands.Bot(command_prefix=command_prefix)
 
 
 def check_if_author_is_stonks(author):
@@ -32,18 +39,50 @@ def handle_private_message(message):
     return bot_response
 
 
-@client.event
+@bot.command(pass_context=True)
+async def giphy(ctx, *, search):
+    embed = discord.Embed(colour=discord.Colour.blue())
+    session = aiohttp.ClientSession()
+
+    if search == '':
+        response = await session.get('https://api.giphy.com/v1/gifs/random?api_key=' + GIPHY_TOKEN)
+        data = json.loads(await response.text())
+        embed.set_image(url=data['data']['images']['original']['url'])
+    else:
+        search.replace(' ', '+')
+        response = await session.get('http://api.giphy.com/v1/gifs/search?q=' + search + '&api_key=' + GIPHY_TOKEN + '&limit=10')
+        data = json.loads(await response.text())
+        gif_choice = random.randint(0, 9)
+        embed.set_image(url=data['data'][gif_choice]['images']['original']['url'])
+
+    await session.close()
+    await ctx.send(embed=embed)
+
+
+@bot.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+    print('We have logged in as {0.user}'.format(bot))
 
 
-@client.event
+@bot.event
 async def on_message(message):
-    if message.author == client.user:
+    if message.author == bot.user:
         return
 
+    await bot.process_commands(message)
+
     content = message.content.lower()
-    if message.channel.type == discord.ChannelType.private:
+    if content.startswith(command_prefix):
+        try:
+            await message.delete()
+        except discord.errors.Forbidden:
+            pass
+
+    elif "sadge" in content:
+        if random.randrange(0, 9) == 5:
+            await message.channel.send(get_sadge_response())
+
+    elif message.channel.type == discord.ChannelType.private:
         await message.channel.send(handle_private_message(message))
 
     elif content.startswith(begin_command) or content.endswith(begin_command):
@@ -74,4 +113,4 @@ async def on_message(message):
             train_chat_bot(server_name, message.content)
 
 
-client.run(os.environ["DISCORD_BOT_TOKEN"])
+bot.run(os.environ["DISCORD_BOT_TOKEN"])

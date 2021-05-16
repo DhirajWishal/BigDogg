@@ -90,8 +90,13 @@ def enable_private_chat_bot(user_name):
     :return: None.
     """
 
-    private_chat_bots[user_name] = create_new_chat_bot()
-    private_chat_bot_trainers[user_name] = create_new_chat_bot_trainer(private_chat_bots[user_name])
+    try:
+        null_bot = private_chat_bots[user_name]
+        null_trainer = private_chat_bot_trainers[user_name]
+
+    except KeyError:
+        private_chat_bots[user_name] = create_new_chat_bot()
+        private_chat_bot_trainers[user_name] = create_new_chat_bot_trainer(private_chat_bots[user_name])
 
 
 def disable_private_chat_bot(user_name):

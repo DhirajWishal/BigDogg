@@ -132,6 +132,9 @@ class DecisionTree:
         self.populate_hello()
 
     def travel_tree(self, parent_list) -> Node:
+        if len(parent_list) == 0:
+            return self.root_node
+
         final_node = self.root_node.get_child(parent_list.pop(0))
         for node in parent_list:
             final_node = final_node.get_child(node)

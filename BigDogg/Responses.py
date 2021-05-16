@@ -38,6 +38,26 @@ bark_list = [
     "No wonder why the new generation is just a bunch of pussies"
 ]
 
+sadge_list = [
+    "Bruhh what a looser",
+    "Hmm i feel you dawg.",
+    "Stop being a pussy and try hard.",
+    "Suicide is never a good idea. But never a bad idea either.",
+    "I feel sorry for you dude. Prolly you just... Die?",
+    "Im sorry to hear that child. Or maybe not.",
+    "Heyy cheer up, not everyone s gifted.",
+    "Jacking off always help.. You should try that once.",
+    "Sadge"
+]
+
+
+def get_sadge_response():
+    """
+    Get a random sadge response.
+    :return: The response.
+    """
+    return random.choice(sadge_list)
+
 
 def add_to_list(list_name, list_to_add, content, begin_index):
     """
