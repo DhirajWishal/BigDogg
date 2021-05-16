@@ -1,9 +1,9 @@
 import discord
-from Responses import *
-from WebInterface import *
+from DecisionTree import *
 
 client = discord.Client()
 begin_command = "dogg"
+decision_tree = DecisionTree()
 
 
 def check_if_author_is_stonks(author):
@@ -83,6 +83,16 @@ async def on_message(message):
         elif "all commands" in content:
             await message.channel.send(print_all_commands())
 
+        # Enable chat bot.
+        elif "enable chat bot" in content:
+            chat_bot_enables[message.guild.name] = True
+            await message.channel.send("Chat bot enabled!")
+
+        # Disable chat bot.
+        elif "disable chat bot" in content:
+            chat_bot_enables[message.guild.name] = False
+            await message.channel.send("Chat bot disabled!")
+
         # Execute a command (currently unavailable).
         elif "execute" in content:
             if len(message.attachments):
@@ -113,5 +123,23 @@ async def on_message(message):
         # Bark.
         else:
             await message.channel.send(dogg_bark(content))
+
+    else:
+        try:
+            if chat_bot_enables[message.guild.name]:
+                train_chat_bot(message.content)
+                new_response = str(talk_to_chat_bot(message.content))
+                train_chat_bot(new_response)
+                previous_bot_input[message.guild.name] = new_response
+
+                await message.channel.send(new_response)
+
+            elif (len(message.attachments) == 0) and ("http" not in message.content):
+                train_chat_bot(message.content)
+
+        except KeyError:
+            chat_bot_enables[message.guild.name] = False
+            train_chat_bot(message.content)
+
 
 client.run(os.environ["DISCORD_BOT_TOKEN"])

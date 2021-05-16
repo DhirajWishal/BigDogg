@@ -108,6 +108,14 @@ Printing {list_name} list.
 """
 
 
+def wrong_command():
+    """
+    Issue a note if a wrong command is set.
+    :return: The issue note.
+    """
+    return "Wrong command dumb ass. Go check `dogg help` before coming back moron."
+
+
 def send_help():
     """
     Send help!
@@ -118,19 +126,21 @@ def send_help():
 BigDogg v1.0
 
 Commands: dogg [command] [arg1, arg2, ...]
-    help            -   Send help (print this message).
-    hello           -   Say hello to BigDogg.
-    add             -   Add two numbers. This uses two arguments and the two arguments must be either integers or floats.
-    sub             -   Subtract two numbers. This uses two arguments and the two arguments must be either integers or floats.
-    mul             -   Multiply two numbers. This uses two arguments and the two arguments must be either integers or floats.
-    div             -   Divide two numbers. This uses two arguments and the two arguments must be either integers or floats.
-    all commands    -   Print all the supported commands.
+    help                -   Send help (print this message).
+    hello               -   Say hello to BigDogg.
+    add                 -   Add two numbers. This uses two arguments and the two arguments must be either integers or floats.
+    sub                 -   Subtract two numbers. This uses two arguments and the two arguments must be either integers or floats.
+    mul                 -   Multiply two numbers. This uses two arguments and the two arguments must be either integers or floats.
+    div                 -   Divide two numbers. This uses two arguments and the two arguments must be either integers or floats.
+    enable chat bot     -   Enable chat bot and talk to Big Dogg.
+    disable chat bot    -   Disable chat bot.
+    all commands        -   Print all the supported commands.
     
 Author specific commands: dogg [command] [entry...]
     add to hello list                       -   Add a new element to the hello response list.
     remove from hello list                  -   Remove an element from the hello response list.
     add to hello candidate list             -   Add a new element to the hello candidate (selection) list. 
-    remove from hello candidate list        -   Remove an element from the hello candidate list.
+    remove from hello candidate list        -   Remove an element from the hello candidate (selection) list.
     add to bark list                        -   Add a new element to the bark response list.
     remove from bark list                   -   Remove an element from the bark response list.
     add to bark candidate list              -   Add a new element to the bark candidate (selection) list.
