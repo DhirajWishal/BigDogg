@@ -74,7 +74,7 @@ def remove_from_list(list_name, list_to_be_removed_from, content, begin_index):
     input_list = content.split()
 
     if len(input_list) < (begin_index + 1):
-        return f"Hmm... I think you forgot to enter what you want to remove. Please follow the format 'dogg remove from {list_name} list [...]'"
+        return f"Hmm... I think you forgot to enter what you want to remove. Please follow the format 'dogg remove from {list_name} list [...]' "
 
     entry_to_remove = ""
     for word in range(begin_index, len(input_list)):
@@ -84,7 +84,8 @@ def remove_from_list(list_name, list_to_be_removed_from, content, begin_index):
         list_to_be_removed_from.remove(entry_to_remove)
 
     except ValueError:
-        return f"I think the entry you wish to remove isn't there in the list. Are you sure about that? Maybe use `dogg print {list_name} list` command before issuing this command."
+        return f"I think the entry you wish to remove isn't there in the list. Are you sure about that? Maybe use " \
+               f"`dogg print {list_name} list` command before issuing this command. "
 
     return f"The element is successfully removed from the {list_name} list."
 
@@ -113,7 +114,19 @@ def wrong_command():
     Issue a note if a wrong command is set.
     :return: The issue note.
     """
-    return "Wrong command dumb ass. Go check `dogg help` before coming back moron."
+    return random.choice([
+        "Do i look like a damn joke to you faggot?",
+        "LET. ME. BE. MOTHER FUCKER.",
+        "Yeah yeah what is it now? Your mom forgot to feed you?",
+        "Leave me alone dude.. if you dont have anything to do, i dont know maybe do a line of coke.",
+        "FUCK. YOU.",
+        "What a fucking waste of space...",
+        "Shut The Fuck Up Thot!",
+        "Get lost fucking pedophile.",
+        "Ahh yes the gay ass nigga again...",
+        "Want some big dog jizz mofo?",
+        "Wrong command dumb ass. Go check `dogg help` before coming back moron."
+    ])
 
 
 def send_help():
@@ -210,12 +223,12 @@ def perform_calculation(content, op):
 
     try:
         return str(op(int(input_list[2]), int(input_list[3])))
-    except ValueError:
+    except (ValueError, ZeroDivisionError):
         try:
             return str(op(float(input_list[2]), float(input_list[3])))
-        except ValueError:
+        except (ValueError, ZeroDivisionError):
             return "Hmm... your two arguments are not supported. Make sure that both of the arguments are either " \
-                   "integers or floats. "
+                   "integers or floats. If dividing, make sure that you wont encounter a zero division error."
 
 
 def perform_addition(content):

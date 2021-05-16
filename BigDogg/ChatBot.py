@@ -44,6 +44,7 @@ def enable_chat_bot(server_name):
     :return: Nonde
     """
     chat_bot_enables[server_name] = True
+    return f"Chat bot enabled for server: {server_name}"
 
 
 def disable_chat_bot(server_name):
@@ -53,3 +54,4 @@ def disable_chat_bot(server_name):
     :return: Nonde
     """
     chat_bot_enables[server_name] = False
+    return f"Chat bot disabled for server: {server_name}"

@@ -3,7 +3,8 @@ from DecisionTree import *
 
 client = discord.Client()
 begin_command = "dogg"
-decision_tree = DecisionTree()
+decision_tree = DecisionTree(begin_command)
+personal_message_mode = False
 
 
 def check_if_author_is_stonks(author):
@@ -27,102 +28,10 @@ async def on_message(message):
 
     content = message.content.lower()
     if content.startswith(begin_command) or content.endswith(begin_command):
-        # Add a new entry to the hello list.
-        if ("add to hello list" in content) and check_if_author_is_stonks(message.author):
-            await message.channel.send(add_to_list("hello", hello_list, content, 5))
-
-        # Remove an entry from the hello list.
-        elif ("remove from hello list" in content) and check_if_author_is_stonks(message.author):
-            await message.channel.send(remove_from_list("hello", hello_list, content, 5))
-
-        # Add a new entry to the hello candidate list.
-        elif ("add to hello candidate list" in content) and check_if_author_is_stonks(message.author):
-            await message.channel.send(add_to_list("hello candidate", hello_candidates, content, 6))
-
-        # Remove an entry from the hello candidate list.
-        elif ("remove from hello candidate list" in content) and check_if_author_is_stonks(message.author):
-            await message.channel.send(remove_from_list("hello candidate", hello_candidates, content, 6))
-
-        # Add a new entry to the bark list.
-        elif ("add to bark list" in content) and check_if_author_is_stonks(message.author):
-            await message.channel.send(add_to_list("bark", bark_list, content, 5))
-
-        # Remove an entry from the bark list.
-        elif ("remove from bark list" in content) and check_if_author_is_stonks(message.author):
-            await message.channel.send(remove_from_list("bark", bark_list, content, 5))
-
-        # Add a new entry to the bark candidate list.
-        elif ("add to bark candidate list" in content) and check_if_author_is_stonks(message.author):
-            await message.channel.send(add_to_list("bark candidate", bark_candidates, content, 6))
-
-        # Remove an entry from the bark candidate list.
-        elif ("remove from bark candidate list" in content) and check_if_author_is_stonks(message.author):
-            await message.channel.send(remove_from_list("bark candidate", bark_candidates, content, 6))
-
-        # Print the hello list.
-        elif ("print hello list" in content) and check_if_author_is_stonks(message.author):
-            await message.channel.send(print_list("hello", hello_list))
-
-        # Print the hello candidate list.
-        elif ("print hello candidate list" in content) and check_if_author_is_stonks(message.author):
-            await message.channel.send(print_list("hello candidate", hello_candidates))
-
-        # Print the bark list.
-        elif ("print bark list" in content) and check_if_author_is_stonks(message.author):
-            await message.channel.send(print_list("bark", bark_list))
-
-        # Print the bark candidate list.
-        elif ("print bark candidate list" in content) and check_if_author_is_stonks(message.author):
-            await message.channel.send(print_list("bark candidate", bark_candidates))
-
-        # Request help.
-        elif "help" in content:
-            await message.channel.send(send_help())
-
-        # Print all the available commands.
-        elif "all commands" in content:
-            await message.channel.send(print_all_commands())
-
-        # Enable chat bot.
-        elif "enable chat bot" in content:
-            chat_bot_enables[message.guild.name] = True
-            await message.channel.send("Chat bot enabled!")
-
-        # Disable chat bot.
-        elif "disable chat bot" in content:
-            chat_bot_enables[message.guild.name] = False
-            await message.channel.send("Chat bot disabled!")
-
-        # Execute a command (currently unavailable).
-        elif "execute" in content:
-            if len(message.attachments):
-                await message.channel.send(execute_attachments(message.attachments))
-            else:
-                await message.channel.send(execute(content))
-
-        # Search the candidates and say hello if requested.
-        elif (x in content for x in hello_candidates):
-            await message.channel.send(say_hello())
-
-        # Add two values.
-        elif "add" in content:
-            await message.channel.send(perform_addition(content))
-
-        # Subtract two values.
-        elif "sub" in content:
-            await message.channel.send(perform_subtraction(content))
-
-        # Multiply two values.
-        elif "mul" in content:
-            await message.channel.send(perform_multiplication(content))
-
-        # Divide two values.
-        elif "div" in content:
-            await message.channel.send(perform_division(content))
-
-        # Bark.
+        if "print decision tree" in content:
+            await message.channel.send(decision_tree.print_all_nodes())
         else:
-            await message.channel.send(dogg_bark(content))
+            await message.channel.send(decision_tree.get_callback(content)(message))
 
     else:
         try:

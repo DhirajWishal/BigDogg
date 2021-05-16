@@ -1,6 +1,6 @@
 from Responses import *
 from ChatBot import *
-from WebInterface import *
+from WebCompiler import *
 
 
 def wrong_command_callback(message):
@@ -90,7 +90,7 @@ def print_hello_list_callback(message):
     :param message: The message.
     :return: The return from the function.
     """
-    return print_list("hello list", hello_list)
+    return print_list("hello", hello_list)
 
 
 def print_hello_candidate_list_callback(message):
@@ -99,7 +99,7 @@ def print_hello_candidate_list_callback(message):
     :param message: The message.
     :return: The return from the function.
     """
-    return print_list("hello candidate list", hello_candidates)
+    return print_list("hello candidate", hello_candidates)
 
 
 def print_bark_list_callback(message):
@@ -108,7 +108,7 @@ def print_bark_list_callback(message):
     :param message: The message.
     :return: The return from the function.
     """
-    return print_list("bark list", hello_list)
+    return print_list("bark", hello_list)
 
 
 def print_bark_candidate_list_callback(message):
@@ -117,7 +117,7 @@ def print_bark_candidate_list_callback(message):
     :param message: The message.
     :return: The return from the function.
     """
-    return print_list("bark candidate list", bark_candidates)
+    return print_list("bark candidate", bark_candidates)
 
 
 def enable_chat_bot_callback(message):
